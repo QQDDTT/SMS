@@ -21,6 +21,10 @@
         h2 {
             color: #5a5a5a;
         }
+        .error-message {
+            color: red;
+            margin-bottom: 15px;
+        }
         input[type="text"], input[type="password"] {
             width: 100%;
             padding: 10px;
@@ -43,8 +47,15 @@
     </style>
 </head>
 <body>
-<div class="login">
+<div class="login-container">
     <h2>登录</h2>
+    <!-- 显示错误消息 -->
+    <%
+        String error = (String) request.getAttribute("error");
+        if (error != null) {
+    %>
+        <div class="error-message"><%= error %></div>
+    <% } %>
     <form action="/login" method="post">
         <p>用户名</p>
         <input type="text" name="name" required>

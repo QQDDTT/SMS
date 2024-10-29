@@ -16,7 +16,7 @@
     <!-- 配置组件扫描 -->
     <context:component-scan base-package="com.example.controller"/>
     <context:component-scan base-package="com.example.service"/>
-    <context:component-scan base-package="com.example.mapper"/>
+    <!-- <context:component-scan base-package="com.example.mapper"/> -->
 
     <!-- 配置视图解析器 -->
     <bean class="org.springframework.web.servlet.view.InternalResourceViewResolver">

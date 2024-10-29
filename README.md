@@ -36,6 +36,10 @@ SMS
 
    sh deploy_dockers.sh
 
+3.2 **Windows 启动**
+
+   deploy_win.bat
+
 
 
 
