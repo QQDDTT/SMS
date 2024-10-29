@@ -38,8 +38,4 @@ SMS
 
 3.2 **Windows 启动**
 
-   deploy_win.bat
-
-
-
-
+   双击执行 deploy_win.bat

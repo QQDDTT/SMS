@@ -10,16 +10,19 @@
         <result property="password" column="password" />
         <result property="phone" column="phone" />
         <result property="address" column="address" />
-        <association property="role" javaType="com.example.model.Role">
-            <id property="id" column="role_id" />
-            <result property="role" column="role_name" />
-            <result property="description" column="role_description" />
-            <collection property="authority" ofType="com.example.model.Authority">
-                <id property="id" column="authority_id" />
-                <result property="name" column="authority_name" />
-                <result property="description" column="authority_description" />
-            </collection>
-        </association>
+        <association property="role" resultMap="RoleResultMap"></association>
+    </resultMap>
+    <resultMap id="RoleResultMap" type="com.example.model.Role">
+        <id property="id" column="role_id" />
+        <result property="role" column="role_name" />
+        <result property="description" column="role_description" />
+        <collection property="authority" resultMap="Authority">
+        </collection>
+    </resultMap>
+    <resultMap id="Authority" type="com.example.model.Authority">
+        <id property="id" column="authority_id"/>
+        <result property="name" column="authority_name"/>
+        <result property="description" column="authority_description"/>
     </resultMap>
 
     <!-- 查询所有 User 及其 Role 和 authority -->
@@ -95,13 +98,29 @@
     </update>
 
     <select id="selectByName" resultMap="UserResultMap">
-        SELECT u.id, u.name, u.email, u.password, u.phone, u.address,
-            r.id AS role_id, r.role AS role_name, r.description AS role_description,
-            a.id AS authority_id, a.name AS authority_name, a.description AS authority_description
-        FROM user u
-        LEFT JOIN role r ON u.role_id = r.id
-        LEFT JOIN role_
-        LEFT JOIN authority a ON ra.authority_id = a.id
-        WHERE u.name = #{name} AND u.delete_flag = '0'
+        SELECT 
+            u.id, 
+            u.name, 
+            u.email, 
+            u.password, 
+            u.phone, 
+            u.address,
+            r.id AS role_id, 
+            r.role AS role_name, 
+            r.description AS role_description,
+            a.id AS authority_id, 
+            a.name AS authority_name, 
+            a.description AS authority_description
+        FROM 
+            user u
+        LEFT JOIN 
+            role r ON u.role_id = r.id
+        LEFT JOIN 
+            role_authority ra ON r.id = ra.role_id
+        LEFT JOIN 
+            authority a ON ra.authority_id = a.id
+        WHERE 
+            u.name = #{name} 
+            AND u.delete_flag = '0';
     </select>
 </mapper>

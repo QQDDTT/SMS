@@ -58,9 +58,9 @@
     <% } %>
     <form action="/login" method="post">
         <p>用户名</p>
-        <input type="text" name="name" required>
+        <input type="text" name="name"/>
         <p>密码</p>
-        <input type="password" name="password" required>
+        <input type="password" name="password"/>
         <input type="submit" value="登录">
     </form>
 </div>

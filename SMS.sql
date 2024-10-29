@@ -8,7 +8,7 @@ CREATE TABLE user (
     password VARCHAR(32) NOT NULL,         -- 用户密码
     phone VARCHAR(11),                     -- 用户电话
     address VARCHAR(255),                  -- 用户地址
-    role_id VARCHAR(4) NOT NULL,           -- 角色 ID，外键
+    role_id VARCHAR(6) NOT NULL,           -- 角色 ID，外键
     delete_flag VARCHAR(1) NOT NULL DEFAULT '0', -- 删除标志，0 表示未删除，1 表示已删除
     create_date DATETIME NOT NULL,         -- 创建时间
     update_date DATETIME NOT NULL,         -- 更新时间
@@ -18,7 +18,7 @@ CREATE TABLE user (
 
 -- 创建 role 表
 CREATE TABLE role (
-    id VARCHAR(4) NOT NULL PRIMARY KEY,
+    id VARCHAR(6) NOT NULL PRIMARY KEY,
     role VARCHAR(50) NOT NULL,
     description VARCHAR(255),
     delete_flag VARCHAR(1) NOT NULL DEFAULT '0'
@@ -34,7 +34,7 @@ CREATE TABLE authority (
 
 -- 创建中间表 role_authority
 CREATE TABLE role_authority (
-    role_id VARCHAR(4) NOT NULL,
+    role_id VARCHAR(6) NOT NULL,
     authority_id VARCHAR(4) NOT NULL,
     PRIMARY KEY (role_id, authority_id),
     FOREIGN KEY (role_id) REFERENCES role(id),
