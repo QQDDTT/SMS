@@ -18,9 +18,6 @@
     <context:component-scan base-package="com.example.service"/>
     <context:component-scan base-package="com.example.mapper"/>
 
-    <bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
-        <property name="basePackage" value="com.example.mapper"/>
-    </bean>
     <!-- 配置视图解析器 -->
     <bean class="org.springframework.web.servlet.view.InternalResourceViewResolver">
         <property name="prefix" value="/WEB-INF/views/" />
