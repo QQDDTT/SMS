@@ -4,8 +4,8 @@
 
     <!-- 定义 User 的 resultMap，包括 Role 和 authority 列表 -->
     <resultMap id="UserResultMap" type="com.example.model.User">
-        <id property="id" column="id" />
-        <result property="name" column="name" />
+        <result property="userId" column="user_id" />
+        <result property="userName" column="user_name" />
         <result property="email" column="email" />
         <result property="password" column="password" />
         <result property="phone" column="phone" />
@@ -13,16 +13,15 @@
         <association property="role" resultMap="RoleResultMap"></association>
     </resultMap>
     <resultMap id="RoleResultMap" type="com.example.model.Role">
-        <id property="id" column="role_id" />
-        <result property="role" column="role_name" />
+        <result property="roleId" column="role_id" />
+        <result property="roleName" column="role_name" />
         <result property="description" column="role_description" />
-        <collection property="authority" resultMap="Authority">
-        </collection>
+        <collection property="authority" resultMap="AuthorityResultMap"/>
     </resultMap>
-    <resultMap id="Authority" type="com.example.model.Authority">
-        <id property="id" column="authority_id"/>
-        <result property="name" column="authority_name"/>
-        <result property="description" column="authority_description"/>
+    <resultMap id="AuthorityResultMap" type="com.example.model.Authority">
+        <result property="authorityId" column="authority_id"/>
+        <result property="authorityName" column="authority_name"/>
+        <result property="authorityDescription" column="authority_description"/>
     </resultMap>
 
     <!-- 查询所有 User 及其 Role 和 authority -->
@@ -99,18 +98,9 @@
 
     <select id="selectByName" resultMap="UserResultMap">
         SELECT 
-            u.id, 
-            u.name, 
-            u.email, 
-            u.password, 
-            u.phone, 
-            u.address,
-            r.id AS role_id, 
-            r.role AS role_name, 
-            r.description AS role_description,
-            a.id AS authority_id, 
-            a.name AS authority_name, 
-            a.description AS authority_description
+            u.id, u.name, u.email, u.password, u.phone, u.address,
+            r.id AS role_id, r.role AS role_name, r.description AS role_description,
+            a.id AS authority_id, a.name AS authority_name, a.description AS authority_description
         FROM 
             user u
         LEFT JOIN 

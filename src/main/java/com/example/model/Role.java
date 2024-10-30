@@ -10,33 +10,41 @@ import java.util.List;
  */
 public class Role {
 
-    private int id;
-    private String role;
-    private String description;
+    private int roleId;
+    private String roleName;
+    private String roleDescription;
     private List<Authority> authorities;
 
-    public int getId() {
-        return id;
+    public int getRoleId() {
+        return roleId;
     }
-    public void setId(int id) {
-        this.id = id;
+    public void setRoleId(int roleId) {
+        this.roleId = roleId;
     }
-    public String getRole() {
-        return role;
+    public String getRoleName() {
+        return roleName;
     }
-    public void setRole(String role) {
-        this.role = role;
+    public void setRoleName(String roleName) {
+        this.roleName = roleName;
     }
-    public String getDescription() {
-        return description;
+    public String getRoleDescription() {
+        return roleDescription;
     }
-    public void setDescription(String description) {
-        this.description = description;
+    public void setRoleDescription(String roleDescription) {
+        this.roleDescription = roleDescription;
     }
     public List<Authority> getAuthorities() {
         return authorities;
     }
     public void setAuthorities(List<Authority> authorities) {
         this.authorities = authorities;
+    }
+
+    @Override
+    public String toString() {
+        return "Role [roleId=" + roleId + 
+                ", roleName=" + roleName +
+                ", roleDescription=" + roleDescription +
+                ", authorities=" + authorities + "]";
     }
 }

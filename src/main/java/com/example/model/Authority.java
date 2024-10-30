@@ -8,25 +8,32 @@ package com.example.model;
  */
 public class Authority {
 
-    private String id;
-    private String name;
-    private String description;
-    public String getId() {
-        return id;
+    private String authorityId;
+    private String authorityName;
+    private String authorityDescription;
+    public String getAuthorityId() {
+        return authorityId;
     }
-    public void setId(String id) {
-        this.id = id;
+    public void setAuthorityId(String authorityId) {
+        this.authorityId = authorityId;
     }
-    public String getName() {
-        return name;
+    public String getAuthorityName() {
+        return authorityName;
     }
-    public void setName(String name) {
-        this.name = name;
+    public void setAuthorityName(String authorityName) {
+        this.authorityName = authorityName;
     }
-    public String getDescription() {
-        return description;
+    public String getAuthorityDescription() {
+        return authorityDescription;
     }
-    public void setDescription(String description) {
-        this.description = description;
+    public void setDescription(String authorityDescription) {
+        this.authorityDescription = authorityDescription;
+    }
+    @Override
+    public String toString() {
+        return "Authority [authorityId=" + authorityId + 
+                ", authorityName=" + authorityName + 
+                ", authorityDescription="
+                + authorityDescription + "]";
     }
 }

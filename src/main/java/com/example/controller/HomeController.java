@@ -9,7 +9,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 
 import com.example.common.SMSException;
 import com.example.model.Role;
-import com.example.model.User;
 import com.example.service.UserService;
 
 import jakarta.servlet.http.HttpServletRequest;
@@ -54,8 +53,7 @@ public class HomeController {
             if (role != null) {
                 LOGGER.info("Login successful");
                 request.getSession().setAttribute("role", role);
-                request.setAttribute("error", "");
-                switch (role.getRole()) {
+                switch (role.getRoleName()) {
                     case "admin":
                         return "/admin/home";
                     case "user":

@@ -94,6 +94,7 @@ public class UserService {
         LOGGER.info("Login with name : [" + name + "] and password : [" + password + "]");
         try {
             User user = userMapper.selectByName(name);
+            LOGGER.info("User : " + user.toString());
             if (user != null && user.getPassword().equals(password)) {
                 return user.getRole();
             }

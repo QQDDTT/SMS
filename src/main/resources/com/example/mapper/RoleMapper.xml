@@ -3,43 +3,41 @@
 <mapper namespace="com.example.mapper.RoleMapper">
 
     <!-- 定义 resultMap，用于关联角色和权限 -->
-    <resultMap id="RoleWithauthorityMap" type="com.example.model.Role">
-        <id property="id" column="id"/>
-        <result property="role" column="role"/>
-        <result property="description" column="description"/>
+    <resultMap id="RoleResultMap" type="com.example.model.Role">
+        <result property="roleId" column="role_id"/>
+        <result property="roleName" column="role_name"/>
+        <result property="description" column="role_description" />
         <!-- 使用 collection 元素关联权限列表 -->
-        <collection property="authority" resultMap="Authority">
-        </collection>
+        <collection property="authority" resultMap="AuthorityResultMap"/>
     </resultMap>
-
-    <resultMap id="Authority" type="com.example.model.Authority">
-        <id property="id" column="authority_id"/>
-        <result property="name" column="authority_name"/>
-        <result property="description" column="authority_description"/>
+    <resultMap id="AuthorityResultMap" type="com.example.model.Authority">
+        <result property="authorityId" column="authority_id"/>
+        <result property="authorityName" column="authority_name"/>
+        <result property="authorityDescription" column="authority_description"/>
     </resultMap>
 
     <!-- 查询所有未删除的角色及其权限信息 -->
-    <select id="selectAllrole" resultMap="RoleWithauthorityMap">
+    <select id="selectAllrole" resultMap="RoleResultMap">
         SELECT
             r.id, r.role, r.description,
             a.id AS authority_id, a.name AS authority_name, a.description AS authority_description
         FROM
             role r
-        LEFT JOIN role_authority ra ON r.id = ra.id
+        LEFT JOIN role_authority ra ON r.id = ra.role_id
         LEFT JOIN authority a ON ra.authority_id = a.id
         WHERE
             r.delete_flag = '0'
     </select>
 
     <!-- 查询角色信息及其权限通过角色 ID，忽略已删除的角色 -->
-    <select id="selectRoleById" parameterType="int" resultMap="RoleWithauthorityMap">
+    <select id="selectRoleById" parameterType="int" resultMap="RoleResultMap">
         SELECT 
             r.id, r.role, r.description,
             a.id AS authority_id, a.name AS authority_name, a.description AS authority_description
         FROM 
             role r
         LEFT JOIN 
-            role_authority ra ON r.id = ra.id
+            role_authority ra ON r.id = ra.role_id
         LEFT JOIN 
             authority a ON ra.authority_id = a.id
         WHERE 
@@ -48,7 +46,8 @@
 
     <!-- 插入角色 -->
     <insert id="insertRole" parameterType="com.example.model.Role">
-        INSERT INTO role (id, role, description, delete_flag) VALUES (#{id}, #{role}, #{description}, '0')
+        INSERT INTO role (id, role, description, delete_flag) 
+        VALUES (#{id}, #{role}, #{description}, '0')
     </insert>
 
     <!-- 更新角色 -->
