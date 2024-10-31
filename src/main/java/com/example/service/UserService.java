@@ -100,7 +100,7 @@ public class UserService {
             }
             throw new SMSException("Login failed with name : " + name + " and password : " + password);
         } catch (Exception e) {
-            LOGGER.error(e.getMessage());
+            LOGGER.error("Exception : " + e.getMessage());
             LOGGER.error("Login failed with name : " + name + " and password : " + password);
             throw new SMSException("Login failed with name : " + name + " and password : " + password);
         }

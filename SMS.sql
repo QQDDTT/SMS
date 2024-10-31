@@ -1,5 +1,10 @@
 CREATE DATABASE SMS;
 
+DROP TABLE role_authority;
+DROP TABLE role;
+DROP TABLE authority;
+DROP TABLE user;
+
 -- 创建 user 表
 CREATE TABLE user (
     id VARCHAR(8) NOT NULL PRIMARY KEY,   -- 用户 ID，作为主键
@@ -18,17 +23,17 @@ CREATE TABLE user (
 
 -- 创建 role 表
 CREATE TABLE role (
-    id VARCHAR(6) NOT NULL PRIMARY KEY,
-    role VARCHAR(50) NOT NULL,
-    description VARCHAR(255),
+    role_id VARCHAR(6) NOT NULL PRIMARY KEY,
+    role_name VARCHAR(50) NOT NULL,
+    role_description VARCHAR(255),
     delete_flag VARCHAR(1) NOT NULL DEFAULT '0'
 );
 
 -- 创建 authority 表
 CREATE TABLE authority (
-    id VARCHAR(4) NOT NULL PRIMARY KEY,
-    name VARCHAR(50) NOT NULL,
-    description VARCHAR(255),
+    authority_id VARCHAR(4) NOT NULL PRIMARY KEY,
+    authority_name VARCHAR(50) NOT NULL,
+    authority_description VARCHAR(255),
     delete_flag VARCHAR(1) NOT NULL DEFAULT '0'
 );
 
@@ -37,73 +42,73 @@ CREATE TABLE role_authority (
     role_id VARCHAR(6) NOT NULL,
     authority_id VARCHAR(4) NOT NULL,
     PRIMARY KEY (role_id, authority_id),
-    FOREIGN KEY (role_id) REFERENCES role(id),
-    FOREIGN KEY (authority_id) REFERENCES authority(id)
+    FOREIGN KEY (role_id) REFERENCES role(role_id),
+    FOREIGN KEY (authority_id) REFERENCES authority(authority_id)
 );
 
 -- 学生管理权限
-INSERT INTO authority (id, name, description) VALUES 
+INSERT INTO authority (authority_id, authority_name, authority_description) VALUES 
 ('ST01', 'VIEW_STUDENT', '查看学生信息'),
 ('ST02', 'ADD_STUDENT', '添加学生信息'),
 ('ST03', 'EDIT_STUDENT', '编辑学生信息'),
 ('ST04', 'DELETE_STUDENT', '删除学生信息');
 
 -- 课程管理权限
-INSERT INTO authority (id, name, description) VALUES 
+INSERT INTO authority (authority_id, authority_name, authority_description) VALUES 
 ('CO01', 'VIEW_COURSE', '查看课程信息'),
 ('CO02', 'ADD_COURSE', '添加课程'),
 ('CO03', 'EDIT_COURSE', '编辑课程信息'),
 ('CO04', 'DELETE_COURSE', '删除课程');
 
 -- 成绩管理权限
-INSERT INTO authority (id, name, description) VALUES 
+INSERT INTO authority (authority_id, authority_name, authority_description) VALUES 
 ('GR01', 'VIEW_GRADES', '查看成绩'),
 ('GR02', 'ADD_GRADES', '录入成绩'),
 ('GR03', 'EDIT_GRADES', '编辑成绩'),
 ('GR04', 'DELETE_GRADES', '删除成绩记录');
 
 -- 用户管理权限
-INSERT INTO authority (id, name, description) VALUES 
+INSERT INTO authority (authority_id, authority_name, authority_description) VALUES 
 ('US01', 'VIEW_USER', '查看用户'),
 ('US02', 'ADD_USER', '添加用户'),
 ('US03', 'EDIT_USER', '编辑用户'),
 ('US04', 'DELETE_USER', '删除用户');
 
 -- 系统设置权限
-INSERT INTO authority (id, name, description) VALUES 
+INSERT INTO authority (authority_id, authority_name, authority_description) VALUES 
 ('SY01', 'MANAGE_role', '管理角色和权限'),
 ('SY02', 'VIEW_LOGS', '查看系统日志'),
 ('SY03', 'BACKUP_RESTORE', '备份和恢复数据'),
 ('SY04', 'SET_NOTIFICATIONS', '设置通知和消息');
 
 -- 通知与公告管理权限
-INSERT INTO authority (id, name, description) VALUES 
+INSERT INTO authority (authority_id, authority_name, authority_description) VALUES 
 ('AN01', 'VIEW_ANNOUNCEMENTS', '查看公告'),
 ('AN02', 'ADD_ANNOUNCEMENTS', '发布公告'),
 ('AN03', 'EDIT_ANNOUNCEMENTS', '编辑公告'),
 ('AN04', 'DELETE_ANNOUNCEMENTS', '删除公告');
 
 -- 报表管理权限
-INSERT INTO authority (id, name, description) VALUES 
+INSERT INTO authority (authority_id, authority_name, authority_description) VALUES 
 ('RP01', 'GENERATE_STUDENT_REPORT', '生成学生报表'),
 ('RP02', 'GENERATE_COURSE_REPORT', '生成课程报表'),
 ('RP03', 'EXPORT_REPORT', '导出报表');
 
 -- 宿舍和后勤管理权限
-INSERT INTO authority (id, name, description) VALUES 
+INSERT INTO authority (authority_id, authority_name, authority_description) VALUES 
 ('DM01', 'VIEW_DORM_ASSIGNMENT', '查看宿舍分配信息'),
 ('DM02', 'MANAGE_DORM_ASSIGNMENT', '管理宿舍分配'),
 ('LG01', 'VIEW_LOGISTICS_REQUEST', '查看后勤服务请求'),
 ('LG02', 'PROCESS_LOGISTICS_REQUEST', '处理后勤服务请求');
 
 -- 其他权限
-INSERT INTO authority (id, name, description) VALUES 
+INSERT INTO authority (authority_id, authority_name, authority_description) VALUES 
 ('OT01', 'ACCESS_CONTROL', '访问控制'),
 ('OT02', 'DATA_IMPORT_EXPORT', '数据导入/导出'),
 ('OT03', 'APPROVAL', '审批权限');
 
 -- 插入角色
-INSERT INTO role (id, role_name, description) VALUES 
+INSERT INTO role (role_id, role_name, role_description) VALUES 
 ('ADMIN', '超级管理员', '系统的最高权限用户'),
 ('MOD', '管理员', '系统的日常管理者'),
 ('TEACH', '教师', '负责授课和学生管理'),
