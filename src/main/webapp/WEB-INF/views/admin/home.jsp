@@ -1,5 +1,4 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
-<!DOCTYPE html>
+<%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -46,24 +45,6 @@
             <p>在线用户数：<%= request.getAttribute("onlineUserCount") %></p>
         </div>
 
-        <!-- 通知面板 -->
-        <div class="card">
-            <h2>最新通知</h2>
-            <%
-                List<String> announcements = (List<String>) request.getAttribute("announcementList");
-                if (announcements != null && !announcements.isEmpty()) {
-                    for (String announcement : announcements) {
-            %>
-                        <p><%= announcement %></p>
-            <%
-                    }
-                } else {
-            %>
-                <p>暂无通知</p>
-            <%
-                }
-            %>
-        </div>
     </div>
     <div class="footer">
         <p>&copy; 2024 学生管理系统</p>

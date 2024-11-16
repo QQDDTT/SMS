@@ -1,25 +1,17 @@
 CREATE DATABASE SMS;
 
 DROP TABLE role_authority;
+DROP TABLE user;
 DROP TABLE role;
 DROP TABLE authority;
-DROP TABLE user;
 
--- 创建 user 表
-CREATE TABLE user (
-    id VARCHAR(8) NOT NULL PRIMARY KEY,   -- 用户 ID，作为主键
-    name VARCHAR(16) NOT NULL,             -- 用户姓名
-    email VARCHAR(64) NOT NULL UNIQUE,     -- 用户邮箱，唯一
-    password VARCHAR(32) NOT NULL,         -- 用户密码
-    phone VARCHAR(11),                     -- 用户电话
-    address VARCHAR(255),                  -- 用户地址
-    role_id VARCHAR(6) NOT NULL,           -- 角色 ID，外键
-    delete_flag VARCHAR(1) NOT NULL DEFAULT '0', -- 删除标志，0 表示未删除，1 表示已删除
-    create_date DATETIME NOT NULL,         -- 创建时间
-    update_date DATETIME NOT NULL,         -- 更新时间
-    FOREIGN KEY (role_id) REFERENCES role(id) -- 角色 ID 外键约束
+-- 创建 authority 表
+CREATE TABLE authority (
+    authority_id VARCHAR(4) NOT NULL PRIMARY KEY,
+    authority_name VARCHAR(50) NOT NULL,
+    authority_description VARCHAR(255),
+    delete_flag VARCHAR(1) NOT NULL DEFAULT '0'
 );
-
 
 -- 创建 role 表
 CREATE TABLE role (
@@ -29,12 +21,19 @@ CREATE TABLE role (
     delete_flag VARCHAR(1) NOT NULL DEFAULT '0'
 );
 
--- 创建 authority 表
-CREATE TABLE authority (
-    authority_id VARCHAR(4) NOT NULL PRIMARY KEY,
-    authority_name VARCHAR(50) NOT NULL,
-    authority_description VARCHAR(255),
-    delete_flag VARCHAR(1) NOT NULL DEFAULT '0'
+-- 创建 user 表
+CREATE TABLE user (
+    user_id VARCHAR(8) NOT NULL PRIMARY KEY,           -- 用户 ID，作为主键
+    user_name VARCHAR(16) NOT NULL,                    -- 用户姓名
+    email VARCHAR(64) NOT NULL UNIQUE,            -- 用户邮箱，唯一
+    password VARCHAR(32) NOT NULL,                -- 用户密码
+    phone VARCHAR(11),                            -- 用户电话
+    address VARCHAR(255),                         -- 用户地址
+    role_id VARCHAR(6) NOT NULL,                  -- 角色 ID，外键
+    delete_flag VARCHAR(1) NOT NULL DEFAULT '0',  -- 删除标志，0 表示未删除，1 表示已删除
+    create_date DATETIME NOT NULL,                -- 创建时间
+    update_date DATETIME NOT NULL,                -- 更新时间
+    FOREIGN KEY (role_id) REFERENCES role(role_id)     -- 角色 ID 外键约束
 );
 
 -- 创建中间表 role_authority
@@ -156,14 +155,6 @@ INSERT INTO role_authority (role_id, authority_id) VALUES
 INSERT INTO role_authority (role_id, authority_id) VALUES 
 ('AUD', 'SY02'), ('AUD', 'RP03');
 
--- 宿舍管理员 (DORM) - 查看和管理宿舍分配
-INSERT INTO role_authority (role_id, authority_id) VALUES 
-('DORM', 'DM01'), ('DORM', 'DM02');
-
--- 审批角色 (APPROVER) - 拥有审批权限
-INSERT INTO role_authority (role_id, authority_id) VALUES 
-('APPROVER', 'OT03');
-
 -- 用户数据
-INSERT INTO user (id, name, email, password, phone, address, role_id, delete_flag, create_date, update_date) VALUES 
-('U0000001', 'admin', 'admin@example.com', 'adminpassword', '12345678901', 'Headquarters', 'ADMIN', '0', NOW(), NOW());
+INSERT INTO user (user_id, user_name, email, password, phone, address, role_id, delete_flag, create_date, update_date) VALUES 
+('U0000001', 'admin', 'admin@example.com', 'password', '12345678901', 'Headquarters', 'ADMIN', '0', NOW(), NOW());

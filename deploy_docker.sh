@@ -46,8 +46,9 @@ fi
 echo "$(date +'%Y-%m-%d %H:%M:%S') ${ORANGE}Docker 镜像构建成功！${NC}"
 
 # 第五步：创建 Docker 容器
+IP_ADDRESS=$(hostname -I | awk '{print $1}')
 echo "$(date +'%Y-%m-%d %H:%M:%S') ${ORANGE}创建 Docker 容器...${NC}"
-docker run -d --name $DOCKER_CONTAINER_NAME -p 8080:8080 $DOCKER_IMAGE_NAME
+docker run -d --name $DOCKER_CONTAINER_NAME -p 8080:8080 --add-host=localhost:$IP_ADDRESS $DOCKER_IMAGE_NAME
 
 if [ $? -ne 0 ]; then
     echo "$(date +'%Y-%m-%d %H:%M:%S') ${ORANGE}Docker 容器创建失败！${NC}"
@@ -60,10 +61,25 @@ echo "$(date +'%Y-%m-%d %H:%M:%S') ${ORANGE}Docker 容器创建成功！${NC}"
 echo "$(date +'%Y-%m-%d %H:%M:%S') ${ORANGE}执行 Docker 容器...${NC}"
 docker exec -d -it $DOCKER_CONTAINER_NAME /bin/bash
 
-echo "$(date +'%Y-%m-%d %H:%M:%S') ${ORANGE}等待 5s 启动浏览器...${NC}"
+# 等待容器启动
+echo "${ORANGE}等待响应${NC}"
+MAX_TIME=30
+WAIT_TIME=0
+while [ $WAIT_TIME -le $MAX_TIME ]; do
+    sleep 1
+    # 撤销上一行内容
+    echo "\033[A\033[K${ORANGE}等待中... ${WAIT_TIME} 秒 ${NC}"
+    # 检查 http://localhost:8080/ 是否有响应
+    if curl -s http://localhost:8080/ > /dev/null; then
+        echo "${ORANGE}启动成功${NC}"
+        # 打开链接
+        echo "${ORANGE}打开浏览器${NC}"
+        explorer.exe http://localhost:8080/
+        break
+    fi
+    WAIT_TIME=$((WAIT_TIME+1))
+done
 
-sleep 5
-
-explorer.exe http://localhost:8080/
-
-echo "$(date +'%Y-%m-%d %H:%M:%S') ${ORANGE}部署完成！${NC}"
+if [ $WAIT_TIME -gt $MAX_TIME ]; then
+    echo "${ORANGE}启动超时，未检测到服务响应${NC}"
+fi

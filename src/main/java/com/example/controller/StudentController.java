@@ -9,19 +9,19 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
 /**
- * User controller.
+ * Student controller.
  *
  * @author QQDDTT
  * @since 0.2
  */
 @Controller
-public class UserController {
+public class StudentController {
 
-    private static final Logger LOGGER = LogManager.getLogger(UserController.class);
+    private static final Logger LOGGER = LogManager.getLogger(StudentController.class);
 
-    @GetMapping("/user/home")
+    @GetMapping("/student/home")
     public String userHome(HttpServletRequest request, HttpServletResponse response) {
-        LOGGER.info("User home page");
-        return "user/home";
+        LOGGER.info("student home page");
+        return "student/home";
     }
 }

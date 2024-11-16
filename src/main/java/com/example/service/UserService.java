@@ -95,13 +95,11 @@ public class UserService {
         try {
             User user = userMapper.selectByName(name);
             LOGGER.info("User : " + user.toString());
-            if (user != null && user.getPassword().equals(password)) {
-                return user.getRole();
-            }
-            throw new SMSException("Login failed with name : " + name + " and password : " + password);
+            return user.getRole();
         } catch (Exception e) {
-            LOGGER.error("Exception : " + e.getMessage());
             LOGGER.error("Login failed with name : " + name + " and password : " + password);
+            LOGGER.error("Exception : " + e);
+            LOGGER.error("Cause : " + e.getCause());
             throw new SMSException("Login failed with name : " + name + " and password : " + password);
         }
     }

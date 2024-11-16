@@ -16,13 +16,13 @@ public interface RoleMapper {
 
     List<Role> selectAllRoles();
 
-    Role selectRoleById(String id);
+    Role selectRoleById(String roleId);
 
     boolean insertRole(Role role);
 
     boolean updateRole(Role role);
 
-    boolean deleteRole(String id);
+    boolean deleteRole(String roleId);
 
     boolean assignAuthoritiesToRole(String roleId, List<String> authorityIds);
 }

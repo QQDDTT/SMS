@@ -11,36 +11,36 @@
 
     <!-- 查询所有 Authority -->
     <select id="selectAllauthorities" resultMap="AuthorityResultMap">
-        SELECT id, name, description
+        SELECT authority_id, authority_name, authority_description
         FROM authority
         WHERE delete_flag = '0'
     </select>
 
     <!-- 根据 ID 查询 Authority -->
     <select id="selectAuthorityById" parameterType="String" resultMap="AuthorityResultMap">
-        SELECT id, name, description
+        SELECT authority_id, authority_name, authority_description
         FROM authority
-        WHERE id = #{id} AND delete_flag = '0'
+        WHERE authority_id = #{authorityId} AND delete_flag = '0'
     </select>
 
     <!-- 插入 Authority -->
     <insert id="insertAuthority" parameterType="com.example.model.Authority">
-        INSERT INTO authority (id, name, description, delete_flag)
-        VALUES (#{id}, #{name}, #{description}, '0')  <!-- 默认不删除 -->
+        INSERT INTO authority (authority_id, authority_name, authority_description, delete_flag)
+        VALUES (#{authorityId}, #{authorityName}, #{authorityDescription}, '0')  <!-- 默认不删除 -->
     </insert>
 
     <!-- 更新 Authority -->
     <update id="updateAuthority" parameterType="com.example.model.Authority">
         UPDATE authority
-        SET name = #{name}, description = #{description}
-        WHERE id = #{id} AND delete_flag = '0'
+        SET authority_name = #{authorityName}, authority_description = #{authorityDescription}
+        WHERE authority_id = #{authorityId} AND delete_flag = '0'
     </update>
 
     <!-- 根据 ID 假删除 Authority -->
     <update id="deleteAuthorityById" parameterType="String">
         UPDATE authority
         SET delete_flag = 1  <!-- 将 delete_flag 设置为 1 表示已删除 -->
-        WHERE id = #{id} AND delete_flag = '0'
+        WHERE authority_id = #{authorityId} AND delete_flag = '0'
     </update>
 
 </mapper>

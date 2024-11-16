@@ -19,54 +19,54 @@
     <!-- 查询所有未删除的角色及其权限信息 -->
     <select id="selectAllrole" resultMap="RoleResultMap">
         SELECT
-            r.id, r.role, r.description,
-            a.id AS authority_id, a.name AS authority_name, a.description AS authority_description
+            r.role_id, r.role_name, r.role_description,
+            a.authority_id, a.authority_name, a.description
         FROM
             role r
-        LEFT JOIN role_authority ra ON r.id = ra.role_id
-        LEFT JOIN authority a ON ra.authority_id = a.id
+        LEFT JOIN role_authority ra ON r.role_id = ra.role_id
+        LEFT JOIN authority a ON ra.authority_id = a.authority_id
         WHERE
             r.delete_flag = '0'
     </select>
 
     <!-- 查询角色信息及其权限通过角色 ID，忽略已删除的角色 -->
-    <select id="selectRoleById" parameterType="int" resultMap="RoleResultMap">
+    <select id="selectRoleById" parameterType="String" resultMap="RoleResultMap">
         SELECT 
-            r.id, r.role, r.description,
-            a.id AS authority_id, a.name AS authority_name, a.description AS authority_description
+            r.role_id, r.role_name, r.role_description,
+            a.authority_id, a.authority_name, a.authority_description
         FROM 
             role r
         LEFT JOIN 
-            role_authority ra ON r.id = ra.role_id
+            role_authority ra ON r.role_id = ra.role_id
         LEFT JOIN 
-            authority a ON ra.authority_id = a.id
+            authority a ON ra.authority_id = a.authority_id
         WHERE 
-            r.id = #{id} AND r.delete_flag = '0'
+            r.role_id = #{roleId} AND r.delete_flag = '0'
     </select>
 
     <!-- 插入角色 -->
     <insert id="insertRole" parameterType="com.example.model.Role">
-        INSERT INTO role (id, role, description, delete_flag) 
-        VALUES (#{id}, #{role}, #{description}, '0')
+        INSERT INTO role (role_id, role_name, role_description, delete_flag) 
+        VALUES (#{roleId}, #{roleName}, #{roleDescription}, '0')
     </insert>
 
     <!-- 更新角色 -->
     <update id="updateRole" parameterType="com.example.model.Role">
-        UPDATE role SET role = #{role}, description = #{description} WHERE id = #{id}
+        UPDATE role SET role_name = #{roleName}, role_description = #{roleDescription} WHERE role_id = #{roleId}
     </update>
 
     <!-- 逻辑删除角色，将 delete_flag 设置为 '1' -->
-    <update id="deleteRole" parameterType="int">
-        UPDATE role SET delete_flag = '1' WHERE id = #{id}
+    <update id="deleteRole" parameterType="String">
+        UPDATE role SET delete_flag = '1' WHERE role_id = #{roleId}
     </update>
 
     <!-- assignAuthoritiesToRole(String roleId, List<String> authorityIds) 方法 -->
-    <insert id="assignAuthoritiesToRole" parameterType="map">
-        INSERT INTO role_authority (id, authority_id)
+    <insert id="assignAuthoritiesToRole" parameterType="String">
+        INSERT INTO role_authority (role_id, authority_id)
         VALUES
         <foreach collection="authorityIds" item="authorityId" separator=",">
-        (#{id}, #{authorityId})
+            (#{roleId}, #{authorityId})
         </foreach>
-        ON DUPLICATE KEY UPDATE id = VALUES(id), authority_id = VALUES(authority_id)
+        ON DUPLICATE KEY UPDATE role_id = VALUES(role_id), authority_id = VALUES(authority_id)
     </insert>
 </mapper>

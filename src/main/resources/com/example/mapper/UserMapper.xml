@@ -16,7 +16,7 @@
         <result property="roleId" column="role_id" />
         <result property="roleName" column="role_name" />
         <result property="roleDescription" column="role_description" />
-        <collection property="authority" resultMap="AuthorityResultMap"/>
+        <collection property="authorities" resultMap="AuthorityResultMap"/>
     </resultMap>
     <resultMap id="AuthorityResultMap" type="com.example.model.Authority">
         <result property="authorityId" column="authority_id"/>
@@ -26,66 +26,76 @@
 
     <!-- 查询所有 User 及其 Role 和 authority -->
     <select id="selectAll" resultMap="UserResultMap">
-        SELECT u.id, u.name, u.email, u.password, u.phone, u.address,
-            r.id AS role_id, r.role AS role_name, r.description AS role_description,
-            a.id AS authority_id, a.name AS authority_name, a.description AS authority_description
+        SELECT u.user_id, u.user_name, u.email, u.password, u.phone, u.address,
+            r.role_id, r.role_name, r.role_description,
+            a.id AS authority_id, a.name AS authority_name, a.authority_description
         FROM user u
-        LEFT JOIN role r ON u.role_id = r.id
-        LEFT JOIN role_authority ra ON r.id = ra.role_id
-        LEFT JOIN authority a ON ra.authority_id = a.id
+        LEFT JOIN role r ON u.role_id = r.role_id
+        LEFT JOIN role_authority ra ON r.role_id = ra.role_id
+        LEFT JOIN authority a ON ra.authority_id = a.authority_id
         WHERE u.delete_flag = '0'
     </select>
 
-
     <!-- 根据 ID 查询 User 及其 Role 和 authority -->
     <select id="selectById" resultMap="UserResultMap">
-        SELECT u.id, u.name, u.email, u.password, u.phone, u.address,
-               r.id AS role_id, r.role AS role_name, r.description AS role_description,
-               a.id AS authority_id, a.name AS authority_name, a.description AS authority_description
+        SELECT u.user_id, u.user_name, u.email, u.password, u.phone, u.address,
+               r.role_id, r.role_name, r.role_description,
+               a.authority_id, a.authority_name, a.authority_description
         FROM user u
-        LEFT JOIN role r ON u.role_id = r.id
-        LEFT JOIN role_authority ra ON r.id = ra.role_id
-        LEFT JOIN authority a ON ra.authority_id = a.id
-        WHERE u.id = #{id} AND u.delete_flag = '0'
+        LEFT JOIN role r ON u.role_id = r.role_id
+        LEFT JOIN role_authority ra ON r.role_id = ra.role_id
+        LEFT JOIN authority a ON ra.authority_id = a.authority_id
+        WHERE u.user_id = #{userId} AND u.delete_flag = '0'
     </select>
 
     <!-- 根据 Email 查询 User 及其 Role 和 authority -->
     <select id="selectByEmail" parameterType="String" resultMap="UserResultMap">
-        SELECT u.id, u.name, u.email, u.password, u.phone, u.address,
-               r.id AS role_id, r.role AS role_name, r.description AS role_description,
-               a.id AS authority_id, a.name AS authority_name, a.description AS authority_description
+        SELECT u.user_id, u.user_name, u.email, u.password, u.phone, u.address,
+               r.role_id, r.role_name, r.role_description,
+               a.authority_id, a.authority_name, a.authority_description
         FROM user u
-        LEFT JOIN role r ON u.role_id = r.id
-        LEFT JOIN role_authority ra ON r.id = ra.role_id
-        LEFT JOIN authority a ON ra.authority_id = a.id
+        LEFT JOIN role r ON u.role_id = r.role_id
+        LEFT JOIN role_authority ra ON r.role_id = ra.role_id
+        LEFT JOIN authority a ON ra.authority_id = a.authority_id
         WHERE u.email = #{email} AND u.delete_flag = '0'
+    </select>
+
+    <select id="selectByName" parameterType="String" resultMap="UserResultMap">
+        SELECT u.user_id, u.user_name, u.email, u.password, u.phone, u.address,
+               r.role_id, r.role_name, r.role_description,
+               a.authority_id, a.authority_name, a.authority_description
+        FROM user u
+        LEFT JOIN role r ON u.role_id = r.role_id
+        LEFT JOIN role_authority ra ON r.role_id = ra.role_id
+        LEFT JOIN authority a ON ra.authority_id = a.authority_id
+        WHERE u.user_name = #{userName} AND u.delete_flag = '0'
     </select>
 
     <!-- 根据 Role ID 查询 User 列表 -->
     <select id="selectByRoleId" parameterType="String" resultMap="UserResultMap">
-        SELECT u.id, u.name, u.email, u.password, u.phone, u.address,
-               r.id AS role_id, r.role AS role_name, r.description AS role_description,
-               a.id AS authority_id, a.name AS authority_name, a.description AS authority_description
+        SELECT u.user_id, u.user_name, u.email, u.password, u.phone, u.address,
+               r.role_id, r.role_name, r.role_description,
+               a.authority_id, a.authority_name, a.authority_description
         FROM user u
-        LEFT JOIN role r ON u.role_id = r.id
-        LEFT JOIN role_authority ra ON r.id = ra.role_id
-        LEFT JOIN authority a ON ra.authority_id = a.id
-        WHERE r.id = #{roleId} AND u.delete_flag = '0'
+        LEFT JOIN role r ON u.role_id = r.role_id
+        LEFT JOIN role_authority ra ON r.role_id = ra.role_id
+        LEFT JOIN authority a ON ra.authority_id = a.authority_id
+        WHERE r.role_id = #{roleId} AND u.delete_flag = '0'
     </select>
 
     <!-- 插入 User -->
     <insert id="insert" parameterType="com.example.model.User">
-        INSERT INTO user (id, name, email, password, phone, address, role_id, delete_flag, create_date, update_date)
-        VALUES (#{id}, #{name}, #{email}, #{password}, #{phone}, #{address}, #{role.id}, '0', NOW(), NOW())
+        INSERT INTO user (user_id, user_name, email, password, phone, address, role_id, delete_flag, create_date, update_date)
+        VALUES (#{userId}, #{userName}, #{email}, #{password}, #{phone}, #{address}, #{role.roleId}, '0', NOW(), NOW())
     </insert>
 
     <!-- 更新 User -->
     <update id="update" parameterType="com.example.model.User">
         UPDATE user
-        SET name = #{name}, email = #{email}, password = #{password}, 
-            phone = #{phone}, address = #{address}, role_id = #{role.id}, 
+        SET user_name = #{userName}, email = #{email}, password = #{password}, 
+            phone = #{phone}, address = #{address}, role_id = #{role.roleId}, 
             update_date = NOW()
-        WHERE id = #{id} AND delete_flag = '0'
+        WHERE user_id = #{userId} AND delete_flag = '0'
     </update>
 
     <!-- 假删除 User -->
@@ -93,24 +103,7 @@
         UPDATE user
         SET delete_flag = '1',
         update_date = NOW()
-        WHERE id = #{id} AND delete_flag = '0'
+        WHERE user_id = #{userId} AND delete_flag = '0'
     </update>
 
-    <select id="selectByName" resultMap="UserResultMap">
-        SELECT 
-            u.id, u.name, u.email, u.password, u.phone, u.address,
-            r.id AS role_id, r.role AS role_name, r.description AS role_description,
-            a.id AS authority_id, a.name AS authority_name, a.description AS authority_description
-        FROM 
-            user u
-        LEFT JOIN 
-            role r ON u.role_id = r.id
-        LEFT JOIN 
-            role_authority ra ON r.id = ra.role_id
-        LEFT JOIN 
-            authority a ON ra.authority_id = a.id
-        WHERE 
-            u.name = #{name} 
-            AND u.delete_flag = '0';
-    </select>
 </mapper>

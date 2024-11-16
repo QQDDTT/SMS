@@ -16,11 +16,11 @@ public interface UserMapper {
 
     List<User> selectAll();
 
-    User selectById(String id);
+    User selectById(String userId);
 
     User selectByEmail(String email);
 
-    User selectByName(String name);
+    User selectByName(String userName);
 
     List<User> selectByAuthority(String authorityId);
 
@@ -28,6 +28,6 @@ public interface UserMapper {
 
     boolean update(User user);
 
-    boolean delete(String id);
+    boolean delete(String userId);
     
 }

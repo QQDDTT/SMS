@@ -10,15 +10,15 @@ import java.util.List;
  */
 public class Role {
 
-    private int roleId;
+    private String roleId;
     private String roleName;
     private String roleDescription;
     private List<Authority> authorities;
 
-    public int getRoleId() {
+    public String getRoleId() {
         return roleId;
     }
-    public void setRoleId(int roleId) {
+    public void setRoleId(String roleId) {
         this.roleId = roleId;
     }
     public String getRoleName() {

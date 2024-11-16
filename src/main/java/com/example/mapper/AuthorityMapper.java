@@ -16,11 +16,11 @@ public interface AuthorityMapper {
 
     List<Authority> selectAllAuthorities();
 
-    Authority selectAuthorityById(String id);
+    Authority selectAuthorityById(String authorityId);
 
     boolean insertAuthority(Authority authority);
 
     boolean updateAuthority(Authority authority);
 
-    boolean deleteAuthorityById(String id);
+    boolean deleteAuthorityById(String authorityId);
 }

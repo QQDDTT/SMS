@@ -21,9 +21,9 @@ import jakarta.servlet.http.HttpServletResponse;
  * @since 0.2
  */
 @Controller
-public class HomeController {
+public class LoginController {
 
-    private static Logger LOGGER = LogManager.getLogger(HomeController.class.getName());
+    private static Logger LOGGER = LogManager.getLogger(LoginController.class);
 
     @Autowired
     private UserService userService;
@@ -34,7 +34,8 @@ public class HomeController {
      */
     @GetMapping("/login")
     public String login(HttpServletRequest request, HttpServletResponse response) {
-        return "/login";
+        LOGGER.info("Get login page");
+        return "login";
     }
 
     /**
@@ -53,13 +54,16 @@ public class HomeController {
             if (role != null) {
                 LOGGER.info("Login successful");
                 request.getSession().setAttribute("role", role);
-                switch (role.getRoleName()) {
-                    case "admin":
-                        return "/admin/home";
-                    case "user":
-                        return "/user/home";
+                switch (role.getRoleId()) {
+                    case "ADMIN":
+                        LOGGER.info("loging as ADMIN");
+                        return "admin/home";
+                    case "STUD":
+                        LOGGER.info("loging as STUD");
+                        return "student/home";
                     default:
-                        return "/";
+                        LOGGER.warn("Role is not found");
+                        return "login";
                 }
             } else {
                 LOGGER.info("Login failed");
